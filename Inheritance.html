@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .company-details {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .company-details h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Company Information</h1>
+    <div id="softwareCompanies" class="company-details"></div>
+    <div id="manufacturingCompanies" class="company-details"></div>
+
+    <script>
+        // Base class: Company
+        function Company(name, location) {
+            this.name = name;
+            this.location = location;
+        }
+
+        Company.prototype.hireEmployee = function(employeeName) {
+            console.log(`Hiring employee: ${employeeName}`);
+        };
+
+        Company.prototype.displayDetails = function() {
+            return `Company Name: ${this.name}<br>Location: ${this.location}`;
+        };
+
+        // Derived class: SoftwareCompany
+        function SoftwareCompany(name, location, numDevelopers) {
+            Company.call(this, name, location);
+            this.numDevelopers = numDevelopers;
+        }
+
+        SoftwareCompany.prototype = Object.create(Company.prototype);
+        SoftwareCompany.prototype.constructor = SoftwareCompany;
+
+        SoftwareCompany.prototype.hireEmployee = function(employeeName) {
+            console.log(`Hiring software developer: ${employeeName}`);
+        };
+
+        SoftwareCompany.prototype.displayDetails = function() {
+            return `${Company.prototype.displayDetails.call(this)}<br>Number of Developers: ${this.numDevelopers}`;
+        };
+
+        // Derived class: ManufacturingCompany
+        function ManufacturingCompany(name, location, numMachines) {
+            Company.call(this, name, location);
+            this.numMachines = numMachines;
+        }
+
+        ManufacturingCompany.prototype = Object.create(Company.prototype);
+        ManufacturingCompany.prototype.constructor = ManufacturingCompany;
+
+        ManufacturingCompany.prototype.hireEmployee = function(employeeName) {
+            console.log(`Hiring manufacturing worker: ${employeeName}`);
+        };
+
+        ManufacturingCompany.prototype.displayDetails = function() {
+            return `${Company.prototype.displayDetails.call(this)}<br>Number of Machines: ${this.numMachines}`;
+        };
+
+        // Create instances of SoftwareCompany
+        const softwareCompanies = [
+            new SoftwareCompany("Tech Innovations", "Hyderabad", 100),
+            new SoftwareCompany("Code Wizards", "Pune", 50),
+            new SoftwareCompany("Byte Solutions", "Chennai", 75)
+        ];
+
+        // Create instances of ManufacturingCompany
+        const manufacturingCompanies = [
+            new ManufacturingCompany("AutoWorks", "Detroit", 50),
+            new ManufacturingCompany("BuildRight", "Chicago", 30),
+            new ManufacturingCompany("Machinery Co.", "Cleveland", 60)
+        ];
+
+        // Display details in HTML for Software Companies
+        const softwareCompaniesDiv = document.getElementById('softwareCompanies');
+        softwareCompaniesDiv.innerHTML = '<h2>Software Companies</h2>';
+        softwareCompanies.forEach(company => {
+            softwareCompaniesDiv.innerHTML += `<div>${company.displayDetails()}</div>`;
+        });
+
+        // Display details in HTML for Manufacturing Companies
+        const manufacturingCompaniesDiv = document.getElementById('manufacturingCompanies');
+        manufacturingCompaniesDiv.innerHTML = '<h2>Manufacturing Companies</h2>';
+        manufacturingCompanies.forEach(company => {
+            manufacturingCompaniesDiv.innerHTML += `<div>${company.displayDetails()}</div>`;
+        });
+    </script>
+</body>
+</html>
